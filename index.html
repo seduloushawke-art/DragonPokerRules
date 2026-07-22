@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { background: #E8DEC0; }
+
+.dpw {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: #E8DEC0;
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 1rem 3rem;
+  width: 100%;
+}
+
+.sheet {
+  color: #1E1409;
+  background: #FAF4E6;
+  max-width: 720px;
+  width: 100%;
+  padding: 2.5rem 2.25rem 3rem;
+  border: 1px solid rgba(120,90,40,0.38);
+  box-shadow: 0 4px 40px rgba(80,50,10,0.13);
+}
+
+.masthead { text-align: center; border-bottom: 1.5px solid rgba(120,90,40,0.38); padding-bottom: 1.4rem; margin-bottom: 1.75rem; }
+.dragon-rule { display: flex; align-items: center; gap: 12px; justify-content: center; margin-bottom: 0.6rem; }
+.rule-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(120,90,40,0.38), transparent); }
+.flame-icon { font-size: 20px; color: #8B7550; }
+h1.title { font-family: 'Cinzel', serif; font-size: 36px; font-weight: 700; letter-spacing: 0.08em; margin: 0 0 4px; color: #1E1409; line-height: 1.2; }
+.subtitle { font-style: italic; font-size: 15px; color: #5A4830; margin: 0 0 10px; letter-spacing: 0.02em; }
+.badge-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+.badge { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.1em; padding: 3px 10px; border: 0.5px solid rgba(120,90,40,0.38); border-radius: 2px; color: #5A4830; text-transform: uppercase; background: #F0E8D0; }
+
+.stat-row { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.stat-chip { background: #F0E8D0; border: 0.5px solid rgba(120,90,40,0.2); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; }
+.stat-num { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700; color: #1E1409; line-height: 1; margin-bottom: 3px; }
+.stat-lbl { font-size: 11px; color: #5A4830; letter-spacing: 0.04em; font-style: italic; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+.section-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #5A4830; margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
+.section-label::after { content: ''; flex: 1; height: 0.5px; background: rgba(120,90,40,0.38); }
+.card-block { background: #F0E8D0; border: 0.5px solid rgba(120,90,40,0.2); border-radius: 8px; padding: 14px 16px; }
+
+.suit-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-bottom: 0.5px solid rgba(120,90,40,0.2); font-size: 14px; }
+.suit-row:last-child { border-bottom: none; }
+.suit-pip { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; font-family: 'Cinzel', serif; }
+.pip-gold   { background: #FDF2DC; color: #7A5518; border: 1px solid #C8A020; }
+.pip-bronze { background: #F5E8D8; color: #6B4420; border: 1px solid #A06830; }
+.pip-brown  { background: #EDE0D0; color: #5A3418; border: 1px solid #8B5A30; }
+.pip-blue   { background: #DCE8F5; color: #1A3C6E; border: 1px solid #3060A8; }
+.pip-green  { background: #DCF0E0; color: #1A4C28; border: 1px solid #2E7840; }
+.suit-info { flex: 1; }
+.suit-name { font-weight: 600; font-size: 14px; color: #1E1409; }
+.suit-desc { font-size: 12px; color: #5A4830; font-style: italic; }
+.suit-rank { font-size: 10px; color: #8B7550; font-family: 'Cinzel', serif; letter-spacing: 0.04em; }
+
+.hand-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.hand-table tr { border-bottom: 0.5px solid rgba(120,90,40,0.2); }
+.hand-table tr:last-child { border-bottom: none; }
+.hand-table td { padding: 6px 4px; vertical-align: middle; }
+.hand-num { font-family: 'Cinzel', serif; font-size: 11px; color: #8B7550; width: 20px; text-align: center; }
+.hand-name { font-weight: 600; color: #1E1409; padding-right: 8px; white-space: nowrap; }
+.hand-desc { color: #5A4830; font-style: italic; font-size: 12px; }
+
+.turn-flow { display: flex; align-items: flex-start; margin-bottom: 1.5rem; }
+.turn-step { flex: 1; text-align: center; position: relative; }
+.turn-step:not(:last-child)::after { content: ''; position: absolute; top: 14px; right: -8px; width: 16px; height: 1px; background: rgba(120,90,40,0.38); z-index: 1; }
+.step-circle { width: 28px; height: 28px; border-radius: 50%; background: #F0E8D0; border: 0.5px solid rgba(120,90,40,0.38); display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-family: 'Cinzel', serif; font-size: 11px; color: #5A4830; }
+.step-label { font-size: 11px; color: #5A4830; line-height: 1.4; font-style: italic; }
+
+.special-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.5rem; }
+.special-card { background: #F0E8D0; border: 0.5px solid rgba(120,90,40,0.2); border-radius: 8px; padding: 10px 12px; }
+.special-card-title { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600; color: #1E1409; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; letter-spacing: 0.04em; }
+.special-card-body { font-size: 12px; color: #5A4830; font-style: italic; line-height: 1.5; }
+
+.info-box { background: #F0E8D0; border: 0.5px solid rgba(120,90,40,0.2); border-left: 2px solid rgba(120,90,40,0.38); border-radius: 0 8px 8px 0; padding: 12px 14px; margin-bottom: 1.5rem; }
+.info-intro { font-size: 13px; color: #5A4830; font-style: italic; line-height: 1.5; margin-bottom: 8px; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px; }
+.info-item { font-size: 12px; color: #5A4830; line-height: 1.5; }
+.info-item strong { display: block; font-weight: 600; font-size: 11px; font-family: 'Cinzel', serif; color: #1E1409; margin-bottom: 2px; letter-spacing: 0.04em; font-style: normal; }
+
+.etiquette-list { list-style: none; }
+.etiquette-list li { font-size: 13.5px; color: #5A4830; padding: 7px 0; border-bottom: 0.5px solid rgba(120,90,40,0.2); display: flex; gap: 10px; align-items: flex-start; font-style: italic; line-height: 1.5; }
+.etiquette-list li:last-child { border-bottom: none; }
+.etiquette-list li i { color: #8B7550; flex-shrink: 0; margin-top: 2px; font-size: 15px; }
+
+.pullquote { text-align: center; padding: 1.5rem 1rem 0; border-top: 1px solid rgba(120,90,40,0.38); margin-top: 1.75rem; }
+.pullquote p { font-style: italic; font-size: 16px; color: #5A4830; margin: 0 0 6px; line-height: 1.6; }
+.pullquote cite { font-size: 11px; font-family: 'Cinzel', serif; color: #8B7550; letter-spacing: 0.08em; font-style: normal; }
+
+.sheet-link-btn-wrap { text-align: center; margin-top: 1.75rem; }
+.sheet-link-btn {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border: 0.5px solid rgba(120,90,40,0.38);
+  border-radius: 6px;
+  background: #F0E8D0;
+  color: #1E1409;
+  text-decoration: none;
+  transition: background .15s, transform .1s;
+}
+.sheet-link-btn:hover { background: #E8DEC0; }
+.sheet-link-btn:active { transform: scale(.98); }
+
+@media (max-width: 700px) {
+  .two-col, .special-grid, .info-grid { grid-template-columns: 1fr; }
+  .stat-row { flex-wrap: wrap; }
+  .stat-chip { min-width: calc(50% - 4px); }
+  h1.title { font-size: 26px; }
+  .sheet { padding: 1.75rem 1.25rem 2.5rem; }
+  .turn-flow { flex-wrap: wrap; }
+  .turn-step { min-width: 45%; margin-bottom: 1rem; }
+}</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Poker Rules</title>
+</head>
+<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+<div class="dpw">
+<div class="sheet">
+
+  <div class="masthead">
+    <div class="dragon-rule">
+      <div class="rule-line"></div>
+      <i class="ti ti-flame flame-icon"></i>
+      <i class="ti ti-flame flame-icon"></i>
+      <i class="ti ti-flame flame-icon"></i>
+      <div class="rule-line"></div>
+    </div>
+    <h1 class="title">Dragon Poker</h1>
+    <p class="subtitle">A game of wits, weyrs, and draconic hierarchy</p>
+    <div class="badge-row">
+      <span class="badge">2-6 players</span>
+      <span class="badge">69-card deck</span>
+      <span class="badge">5 suits</span>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-chip"><div class="stat-num">7</div><div class="stat-lbl">cards per hand</div></div>
+    <div class="stat-chip"><div class="stat-num">3</div><div class="stat-lbl">hatching ground</div></div>
+    <div class="stat-chip"><div class="stat-num">5</div><div class="stat-lbl">turns per round</div></div>
+    <div class="stat-chip"><div class="stat-num">4</div><div class="stat-lbl">wildcards</div></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="section-label">The five suits</div>
+      <div class="card-block">
+        <div class="suit-row"><div class="suit-pip pip-gold">G</div><div class="suit-info"><div class="suit-name">Golds</div><div class="suit-desc">Queen dragons</div></div><div class="suit-rank">Highest</div></div>
+        <div class="suit-row"><div class="suit-pip pip-bronze">Br</div><div class="suit-info"><div class="suit-name">Bronzes</div><div class="suit-desc">Bronze dragons</div></div><div class="suit-rank">High</div></div>
+        <div class="suit-row"><div class="suit-pip pip-brown">Bw</div><div class="suit-info"><div class="suit-name">Browns</div><div class="suit-desc">Brown dragons</div></div><div class="suit-rank">Mid</div></div>
+        <div class="suit-row"><div class="suit-pip pip-blue">Bl</div><div class="suit-info"><div class="suit-name">Blues</div><div class="suit-desc">Blue dragons</div></div><div class="suit-rank">Low</div></div>
+        <div class="suit-row"><div class="suit-pip pip-green">Gn</div><div class="suit-info"><div class="suit-name">Greens</div><div class="suit-desc">Green dragons</div></div><div class="suit-rank">Lowest</div></div>
+      </div>
+      <p style="font-size:11px;color:#8B7550;font-style:italic;margin:6px 4px 0;line-height:1.5;">A 3 of Bronzes beats a 10 of Browns. Dragon color always overrides card number.</p>
+    </div>
+    <div>
+      <div class="section-label">Hand rankings</div>
+      <div class="card-block">
+        <table class="hand-table">
+          <tr><td class="hand-num">1</td><td class="hand-name">Full Flight</td><td class="hand-desc">5 cards, same suit</td></tr>
+          <tr><td class="hand-num">2</td><td class="hand-name">Threadfall</td><td class="hand-desc">5 sequential, any suit</td></tr>
+          <tr><td class="hand-num">3</td><td class="hand-name">The Weyr</td><td class="hand-desc">Three of a kind + pair</td></tr>
+          <tr><td class="hand-num">4</td><td class="hand-name">A Wing</td><td class="hand-desc">Four of a kind</td></tr>
+          <tr><td class="hand-num">5</td><td class="hand-name">Mating Flight</td><td class="hand-desc">Two pairs in Gold/Bronze</td></tr>
+                    <tr><td class="hand-num">6</td><td class="hand-name">Three Abreast</td><td class="hand-desc">Three of a Kind</td></tr>
+          <tr><td class="hand-num">7</td><td class="hand-name">Double Pair</td><td class="hand-desc">Any two pairs</td></tr>
+          <tr><td class="hand-num">8</td><td class="hand-name">The Rider</td><td class="hand-desc">One pair</td></tr>
+          <tr><td class="hand-num">9</td><td class="hand-name">High Card</td><td class="hand-desc">Highest single card wins</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Setup</div>
+  <div class="info-box">
+    <div class="info-grid">
+      <div class="info-item"><strong>Deal</strong>Each player is dealt seven cards.</div>
+      <div class="info-item"><strong>Hatching Ground</strong>Three cards are set face-up on the table as communal cards available to all players.</div>
+      <div class="info-item"><strong>Clutch card</strong>One card is placed face-down below the Hatching Ground, revealed at endgame.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Turn structure</div>
+  <div class="turn-flow">
+    <div class="turn-step"><div class="step-circle">1</div><div class="step-label">Weyr Bell<br>Open betting</div></div>
+    <div class="turn-step"><div class="step-circle">2</div><div class="step-label">Pass / Call<br>or Impress</div></div>
+    <div class="turn-step"><div class="step-circle">3</div><div class="step-label">The Reveal<br>Flip all cards</div></div>
+    <div class="turn-step"><div class="step-circle">4</div><div class="step-label">Draw or swap<br>Hatching Ground</div></div>
+  </div>
+
+  <div class="section-label">Special cards</div>
+  <div class="special-grid">
+    <div class="special-card"><div class="special-card-title"><i class="ti ti-crown" style="font-size:14px;"></i> Weyrwoman</div><div class="special-card-body">Declare as any Gold value of your choice.</div></div>
+    <div class="special-card"><div class="special-card-title"><i class="ti ti-sword" style="font-size:14px;"></i> Weyrleader</div><div class="special-card-body">Declare as any Bronze value of your choice.</div></div>
+    <div class="special-card"><div class="special-card-title"><i class="ti ti-arrows-exchange" style="font-size:14px;"></i> Weyrsecond</div><div class="special-card-body">Force one opponent to swap a card with the Hatching Ground.</div></div>
+    <div class="special-card"><div class="special-card-title"><i class="ti ti-egg" style="font-size:14px;"></i> Impression (x4)</div><div class="special-card-body">Wild - any card, any suit. Must announce "Hatching!" when held.</div></div>
+  </div>
+
+  <div class="section-label">The clutch card</div>
+  <div class="info-box">
+    <p class="info-intro">One card placed face-down beneath the Hatching Ground, revealed after 5 turns.</p>
+    <div class="info-grid">
+      <div class="info-item"><strong>Suit match</strong>Matches winner's suit - double the pot.</div>
+      <div class="info-item"><strong>Value match</strong>Matches any card in winning hand - second place may challenge with a draw.</div>
+      <div class="info-item"><strong>Impression card</strong>Entire pot rolls to next game - a "Gold Flight" pot.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Weyr etiquette</div>
+  <ul class="etiquette-list">
+    <li><i class="ti ti-eye"></i>A rider may not fold while their dragon is physically present and watching. The dragon's pride is at stake.</li>
+    <li><i class="ti ti-bottle"></i>If a green rider wins a Gold Flight pot, tradition demands they buy Benden wine for the whole table.</li>
+    <li><i class="ti ti-gavel"></i>All disputes are settled by the senior Weyrwoman's rider, whose ruling is final and binding.</li>
+  </ul>
+
+  <div class="pullquote">
+    <p>"Thread comes whether you're ready or not. Same as a bad hand of Dragon Poker."</p>
+    <cite>- Overheard at Benden Weyr</cite>
+  </div>
+
+  <div class="sheet-link-btn-wrap">
+  <a href="https://seduloushawke-art.github.io/DragonPoker/" class="sheet-link-btn">
+    <i class="ti ti-arrow-right" style="font-size:14px;vertical-align:-2px;margin-right:6px;"></i>
+    Play the Game!
+  </a>
+</div>
+
+</div>
+</div>
+</body>
+</html>
